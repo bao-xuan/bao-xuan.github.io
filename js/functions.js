@@ -1,4 +1,4 @@
-﻿
+
 var $window = $(window), gardenCtx, gardenCanvas, $garden, garden;
 var clientWidth = $(window).width();
 var clientHeight = $(window).height();
@@ -43,7 +43,7 @@ function getHeartPoint(angle) {
 }
 
 function startHeartAnimation() {
-	var interval = 50;
+	var interval = 30;
 	var angle = 10;
 	var heart = new Array();
 	var animationTimer = setInterval(function () {
@@ -93,9 +93,30 @@ function startHeartAnimation() {
 })(jQuery);
 
 function timeElapse(date){
-	var current = Date();
+	var startData = new Date(date)
+	var y1 = startData.getFullYear();
+	var m1 = startData.getMonth();
+	var d1 = startData.getDate();
+	var current = new Date();
+	var y2 = current.getFullYear();
+	var m2 = current.getMonth();
+	var d2 = current.getDate();
+
+	var days = d2 - d1
+	var offsetM = 0
+	if (m2 < m1) {
+		y2 = y2 - 1;
+		offsetM = 12
+	}
+	var padm2 = offsetM + m2
+	while(padm2 > m1) {
+		days = days + new Date(y1, m1 + 1, 0).getDate()
+		padm2 = padm2 - 1
+	}
+
+  var years = y2 - y1;
 	var seconds = (Date.parse(current) - Date.parse(date)) / 1000;
-	var days = Math.floor(seconds / (3600 * 24));
+	// var days = Math.floor(seconds / (3600 * 24));
 	seconds = seconds % (3600 * 24);
 	var hours = Math.floor(seconds / 3600);
 	if (hours < 10) {
@@ -110,13 +131,13 @@ function timeElapse(date){
 	if (seconds < 10) {
 		seconds = "0" + seconds;
 	}
-	var result = "<span class=\"digit\">" + days + "</span> 天 <span class=\"digit\">" + hours + "</span> 时 <span class=\"digit\">" + minutes + "</span> 分 <span class=\"digit\">" + seconds + "</span> 秒"; 
+	var result = "<span class=\"digit\">" + years + "</span> 年 <span class=\"digit\">" + days + "</span> 天 <span class=\"digit\">" + hours + "</span> 时 <span class=\"digit\">" + minutes + "</span> 分 <span class=\"digit\">" + seconds + "</span> 秒"; 
 	$("#elapseClock").html(result);
 }
 
 function showMessages() {
 	adjustWordsPosition();
-	$('#messages').fadeIn(5000, function() {
+	$('#messages').fadeIn(1000, function() {
 		showLoveU();
 	});
 }
@@ -132,5 +153,5 @@ function adjustCodePosition() {
 }
 
 function showLoveU() {
-	$('#loveu').fadeIn(3000);
+	$('#loveu').fadeIn(500);
 }
